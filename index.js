@@ -9,6 +9,12 @@
 //VARIABLES
 const countriesNode = document.getElementById("countries");
 const form = document.getElementById("continent-filter-form");
+const continents = ["Oceania", "Americas", "Africa", "Europe", "Asia", "Antarctic", "North America", "South America"]
+
+//PROMISES
+//Show all countries
+
+
 
 fetch("https://restcountries.com/v3.1/all")
   .then(response => response.json())
@@ -24,10 +30,25 @@ fetch("https://restcountries.com/v3.1/all")
     }
   })
 
+//Filter by continent
 form.addEventListener("submit", function (event){
   event.preventDefault();
-  countriesNode.innerHTML = ""; 
+  countriesNode.innerHTML = "";
+  
+  if (!continents.includes(event.target[0].value)) {
+    countriesNode.innerHTML = `<h1>Sorry, we couldn't find the term you are looking for. Try one of these</h1>
+                                    <ul class="warning-ul">
+                                      <li>Europe</li>
+                                      <li>Americas (North and South)</li>
+                                      <li>Africa</li>
+                                      <li>Asia</li>
+                                      <li>Oceania</li>
+                                      <li>Anctartic</li>
+                                    </ul>`;
+    countriesNode.style.flexDirection = "Column";
 
+  } else {
+    countriesNode.style.flexDirection = "Row";
   fetch(`https://restcountries.com/v3.1/region/${event.target[0].value}`)
   .then(response => response.json())
   .then(data => {
@@ -40,7 +61,7 @@ form.addEventListener("submit", function (event){
 
     countriesNode.innerHTML += card;           
     }
-  });
+  })};
 })
 
 
